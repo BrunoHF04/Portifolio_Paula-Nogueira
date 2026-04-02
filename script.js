@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // WhatsApp Link Integration
     const whatsappLink = document.getElementById('whatsapp-link');
     const phoneNumber = "5516991066046"; 
-    const message = encodeURIComponent("Olá Dra. Paula Fernanda, vi seu portfólio e gostaria de agendar uma consulta.");
+    const message = encodeURIComponent("Olá Dra. Paula Fernanda, vi seu perfil profissional e gostaria de entrar em contato para conversarmos.");
     
     whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
 

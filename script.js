@@ -18,22 +18,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Reveal Animations using Intersection Observer
-    const revealElements = document.querySelectorAll('.reveal, .expertise-card, .timeline-item, .stat-card, .accordion-item, .section-header');
-    
+    // Reveal Animations & Counter Triggers
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('active');
-                observer.unobserve(entry.target); // Only animate once
+                
+                // Trigger counters specifically
+                if (entry.target.id === 'impacto') {
+                    animateCounters();
+                }
+
+                // Trigger skills section
+                if (entry.target.id === 'especialidades') {
+                    animateSkills();
+                }
+
+                observer.unobserve(entry.target);
             }
         });
-    }, {
-        threshold: 0.1
-    });
+    }, observerOptions);
 
-    revealElements.forEach(el => {
-        el.classList.add('reveal'); // Ensure class is present
+    document.querySelectorAll('section, .reveal, .expertise-card, .timeline-item, .stat-card, .academic-card').forEach(el => {
         observer.observe(el);
     });
 
@@ -59,13 +70,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Mobile Menu Toggle
+    // Mobile Menu Toggle Refined
     const mobileMenu = document.getElementById('mobile-menu');
     const navLinks = document.querySelector('.nav-links');
 
     mobileMenu.addEventListener('click', () => {
-        navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
-        // Add more sophisticated mobile menu logic here if needed
+        navLinks.classList.toggle('active');
+        const icon = mobileMenu.querySelector('i');
+        icon.classList.toggle('fa-bars');
+        icon.classList.toggle('fa-times');
+    });
+
+    // Close mobile menu when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navLinks.classList.remove('active');
+            const icon = mobileMenu.querySelector('i');
+            icon.classList.add('fa-bars');
+            icon.classList.remove('fa-times');
+        });
     });
 
     // WhatsApp Link Integration
@@ -104,13 +127,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Custom Cursor Logic
     const cursor = document.getElementById('cursor');
-    const cursorBlur = document.getElementById('cursor-blur');
     
     document.addEventListener('mousemove', (e) => {
         cursor.style.left = e.clientX + 'px';
         cursor.style.top = e.clientY + 'px';
-        cursorBlur.style.left = e.clientX + 'px';
-        cursorBlur.style.top = e.clientY + 'px';
     });
 
     document.querySelectorAll('a, button, .expertise-card, .accordion-header').forEach(link => {
@@ -118,7 +138,58 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
     });
 
-    // Theme Toggle Logic
+    // Counter Animation
+function animateCounters() {
+    const counters = document.querySelectorAll('.counter');
+    counters.forEach(counter => {
+        const target = +counter.getAttribute('data-target');
+        const count = +counter.innerText;
+        const increment = target / 100;
+
+        if (count < target) {
+            counter.innerText = Math.ceil(count + increment);
+            setTimeout(animateCounters, 20);
+        } else {
+            counter.innerText = target;
+        }
+    });
+}
+
+function animateSkills() {
+    const progressBars = document.querySelectorAll('.skill-progress');
+    progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 100);
+    });
+}
+
+// Magnetic Button Effect (Only on Desktop)
+function initMagneticButtons() {
+    if (window.innerWidth <= 768) return; // Disable on mobile/tablet
+
+    const buttons = document.querySelectorAll('.magnetic');
+    
+    buttons.forEach(btn => {
+        btn.addEventListener('mousemove', (e) => {
+            const position = btn.getBoundingClientRect();
+            const x = e.pageX - position.left - position.width / 2;
+            const y = e.pageY - position.top - position.height / 2;
+            
+            btn.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+        });
+        
+        btn.addEventListener('mouseleave', () => {
+            btn.style.transform = 'translate(0px, 0px)';
+        });
+    });
+}
+
+initMagneticButtons();
+
+// Theme Toggle Logic
     const themeToggle = document.getElementById('theme-toggle');
     const themeIcon = themeToggle.querySelector('i');
     
@@ -168,10 +239,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // Smooth Scrolling for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const target = document.querySelector(this.getAttribute('href'));
+            if (target) {
+                e.preventDefault();
+                target.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+
+    // Back to Top Logic
+    const backToTopBtn = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTopBtn.classList.add('visible');
+        } else {
+            backToTopBtn.classList.remove('visible');
+        }
+    });
+
+    backToTopBtn.addEventListener('click', () => {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
         });
     });
 });

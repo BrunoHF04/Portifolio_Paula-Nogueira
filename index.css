@@ -29,6 +29,13 @@ body {
     background-color: var(--bg-light);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none; /* Premium touch: custom cursor only */
+}
+
+/* Hide custom cursor on mobile */
+@media (max-width: 768px) {
+    body { cursor: auto; }
+    #cursor, #cursor-blur { display: none; }
 }
 
 h1, h2, h3, .logo-text {
@@ -109,6 +116,78 @@ h2 {
     padding: 1rem 2rem;
     font-size: 1.1rem;
     width: 100%;
+}
+
+/* UI Enhanced Tools */
+#scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 4px;
+    background: linear-gradient(to right, var(--primary), var(--primary-light));
+    z-index: 2000;
+    width: 0;
+    transition: width 0.1s ease;
+}
+
+#cursor {
+    width: 8px;
+    height: 8px;
+    background: var(--primary);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s, height 0.3s, background 0.3s;
+}
+
+#cursor.hover {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 128, 128, 0.1);
+    border: 1px solid var(--primary);
+}
+
+#cursor-blur {
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(0, 128, 128, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+}
+
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: var(--primary);
+    color: var(--white);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+#back-to-top.visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#back-to-top:hover {
+    background: var(--primary-dark);
+    transform: translateY(-5px);
 }
 
 /* Navbar */
@@ -281,16 +360,19 @@ h2 {
 }
 
 .stat-card {
-    background: var(--bg-light);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.3);
     border-left: 5px solid var(--primary);
     transition: var(--transition);
 }
 
 .stat-card:hover {
-    transform: translateX(10px);
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    transform: translateX(10px) scale(1.02);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background: var(--white);
 }
 
 .stat-card i {
@@ -316,17 +398,19 @@ h2 {
 }
 
 .expertise-card {
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.7);
+    backdrop-filter: blur(10px);
     padding: 3rem 2rem;
     border-radius: 24px;
     text-align: center;
     transition: var(--transition);
-    border: 1px solid rgba(0,0,0,0.03);
+    border: 1px solid rgba(255,255,255,0.3);
 }
 
 .expertise-card:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+    transform: translateY(-10px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0, 128, 128, 0.1);
+    background: var(--white);
 }
 
 .icon-box {
@@ -449,6 +533,74 @@ footer {
     margin-top: 1rem;
     opacity: 0.6;
     font-size: 0.875rem;
+}
+
+/* FAQ Section */
+.faq {
+    padding: 100px 0;
+    background: var(--bg-light);
+}
+
+.container.small {
+    max-width: 800px;
+}
+
+.accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.accordion-item {
+    background: var(--white);
+    border-radius: 15px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    border: 1px solid rgba(0,0,0,0.02);
+}
+
+.accordion-header {
+    padding: 1.5rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.accordion-header h3 {
+    font-size: 1.1rem;
+    color: var(--accent);
+    margin-bottom: 0;
+}
+
+.accordion-header i {
+    color: var(--primary);
+    transition: var(--transition);
+}
+
+.accordion-item.active .accordion-header {
+    background: rgba(0, 128, 128, 0.05);
+}
+
+.accordion-item.active .accordion-header i {
+    transform: rotate(180deg);
+}
+
+.accordion-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--white);
+}
+
+.accordion-content p {
+    padding: 0 2rem 1.5rem;
+    color: var(--text-muted);
+}
+
+.accordion-item.active .accordion-content {
+    max-height: 400px; /* Increased to avoid clipping */
 }
 
 /* Scroll Animation */

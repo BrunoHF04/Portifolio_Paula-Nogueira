@@ -1,4 +1,13 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Service Worker Registration for PWA
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('./sw.js')
+                .then(reg => console.log('SW Registered'))
+                .catch(err => console.log('SW Error:', err));
+        });
+    }
+
     // Navbar Scroll Effect
     const navbar = document.getElementById('navbar');
     window.addEventListener('scroll', () => {
@@ -10,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Reveal Animations using Intersection Observer
-    const revealElements = document.querySelectorAll('.reveal, .expertise-card, .timeline-item, .stat-card');
+    const revealElements = document.querySelectorAll('.reveal, .expertise-card, .timeline-item, .stat-card, .accordion-item, .section-header');
     
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -61,10 +70,70 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // WhatsApp Link Integration
     const whatsappLink = document.getElementById('whatsapp-link');
-    const phoneNumber = "5516999999999"; // Placeholder number - User should provide the real one
+    const phoneNumber = "5516991066046"; 
     const message = encodeURIComponent("Olá Dra. Paula Fernanda, vi seu portfólio e gostaria de agendar uma consulta.");
     
     whatsappLink.href = `https://wa.me/${phoneNumber}?text=${message}`;
+
+    // Scroll Progress Bar
+    const scrollProgress = document.getElementById('scroll-progress');
+    window.addEventListener('scroll', () => {
+        const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.scrollY / height) * 100;
+        scrollProgress.style.width = `${scrolled}%`;
+    });
+
+    // Dynamic Tab Title
+    const originalTitle = document.title;
+    window.addEventListener('blur', () => {
+        document.title = "🦷 Volte logo para sorrir!";
+    });
+    window.addEventListener('focus', () => {
+        document.title = originalTitle;
+    });
+
+    // Back to Top Button
+    const backToTop = document.getElementById('back-to-top');
+    window.addEventListener('scroll', () => {
+        if (window.scrollY > 300) {
+            backToTop.classList.add('visible');
+        } else {
+            backToTop.classList.remove('visible');
+        }
+    });
+
+    // Custom Cursor Logic
+    const cursor = document.getElementById('cursor');
+    const cursorBlur = document.getElementById('cursor-blur');
+    
+    document.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+        cursorBlur.style.left = e.clientX + 'px';
+        cursorBlur.style.top = e.clientY + 'px';
+    });
+
+    document.querySelectorAll('a, button, .expertise-card, .accordion-header').forEach(link => {
+        link.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+        link.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+    });
+
+    // FAQ Accordion Logic
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    accordionItems.forEach(item => {
+        const header = item.querySelector('.accordion-header');
+        header.addEventListener('click', () => {
+            const isActive = item.classList.contains('active');
+            
+            // Close all items
+            accordionItems.forEach(i => i.classList.remove('active'));
+            
+            // Open clicked item if it wasn't active
+            if (!isActive) {
+                item.classList.add('active');
+            }
+        });
+    });
 
     // Smooth Scrolling for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {

@@ -1,15 +1,32 @@
 /* Color System & Variables */
 :root {
-    --primary: #008080;
-    --primary-dark: #006666;
-    --primary-light: #4DB2B2;
-    --accent: #1A365D;
-    --bg-light: #F8FAFC;
+    /* Light Theme (Nude / Palha Refinado) */
+    --primary: #B88E5E;
+    --primary-dark: #8C6D48;
+    --primary-light: #E0C9A6;
+    --accent: #432818;
+    --bg-light: #FDF7F0;
+    --bg-section: #FFFFFF;
     --white: #FFFFFF;
-    --text-main: #2D3748;
-    --text-muted: #718096;
-    --glass: rgba(255, 255, 255, 0.85);
-    --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --text-main: #432818;
+    --text-muted: #7A6A5E;
+    --glass: rgba(255, 255, 255, 0.75);
+    --border: rgba(184, 142, 94, 0.1);
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+[data-theme="dark"] {
+    --primary: #D4A373;
+    --primary-dark: #B88E5E;
+    --primary-light: #E0C9A6;
+    --accent: #FDF7F0;
+    --bg-light: #0F1115;
+    --bg-section: #161B22;
+    --white: #1C2128;
+    --text-main: #F0F6FC;
+    --text-muted: #8B949E;
+    --glass: rgba(22, 27, 34, 0.8);
+    --border: rgba(212, 163, 115, 0.2);
 }
 
 /* Reset & Base Styles */
@@ -152,7 +169,8 @@ h2 {
 #cursor-blur {
     width: 200px;
     height: 200px;
-    background: radial-gradient(circle, rgba(0, 128, 128, 0.15) 0%, rgba(255, 255, 255, 0) 70%);
+    background: radial-gradient(circle, var(--primary-light) 0%, transparent 70%);
+    opacity: 0.2;
     position: fixed;
     pointer-events: none;
     z-index: 9998;
@@ -254,7 +272,22 @@ h2 {
 }
 
 .nav-links a.active {
-    border-bottom: 2px solid var(--primary);
+    color: var(--primary);
+}
+
+.theme-btn {
+    background: transparent;
+    border: none;
+    color: var(--accent);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: var(--transition);
+}
+
+.theme-btn:hover {
+    color: var(--primary);
+    transform: rotate(15deg);
 }
 
 .menu-toggle {
@@ -282,7 +315,7 @@ h2 {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(rgba(26, 54, 93, 0.7), rgba(0, 128, 128, 0.5));
+    background: linear-gradient(rgba(43, 40, 24, 0.75), rgba(184, 142, 94, 0.3));
 }
 
 .hero-content {
@@ -313,7 +346,7 @@ h2 {
 /* Values Section */
 .values {
     padding: 60px 0;
-    background: var(--bg-light);
+    background: var(--bg-section);
 }
 
 .values-grid {
@@ -337,7 +370,7 @@ h2 {
 /* About Section */
 .about {
     padding: 100px 0;
-    background: var(--white);
+    background: var(--bg-light);
 }
 
 /* About Image */
@@ -390,19 +423,19 @@ h2 {
 }
 
 .stat-card {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--glass);
     backdrop-filter: blur(10px);
     padding: 2rem;
     border-radius: 20px;
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--border);
     border-left: 5px solid var(--primary);
     transition: var(--transition);
 }
 
 .stat-card:hover {
     transform: translateX(10px) scale(1.02);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-    background: var(--white);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+    background: var(--bg-section);
 }
 
 .stat-card i {
@@ -414,6 +447,7 @@ h2 {
 /* Expertise Section */
 .expertise {
     padding: 100px 0;
+    background: var(--bg-section);
 }
 
 .section-header {
@@ -428,19 +462,19 @@ h2 {
 }
 
 .expertise-card {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--glass);
     backdrop-filter: blur(10px);
     padding: 3rem 2rem;
     border-radius: 24px;
     text-align: center;
     transition: var(--transition);
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid var(--border);
 }
 
 .expertise-card:hover {
     transform: translateY(-10px) scale(1.03);
-    box-shadow: 0 20px 40px rgba(0, 128, 128, 0.1);
-    background: var(--white);
+    box-shadow: 0 20px 40px rgba(184, 142, 94, 0.1);
+    background: var(--bg-section);
 }
 
 .icon-box {
@@ -459,7 +493,7 @@ h2 {
 /* Timeline Section */
 .trajectory {
     padding: 100px 0;
-    background: var(--white);
+    background: var(--bg-light);
 }
 
 .timeline {
@@ -494,9 +528,10 @@ h2 {
 .timeline-content {
     width: 45%;
     padding: 2rem;
-    background: var(--bg-light);
+    background: var(--bg-section);
     border-radius: 20px;
     box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
 }
 
 .timeline-date {
@@ -582,11 +617,11 @@ footer {
 }
 
 .accordion-item {
-    background: var(--white);
+    background: var(--bg-section);
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0,0,0,0.03);
-    border: 1px solid rgba(0,0,0,0.02);
+    border: 1px solid var(--border);
 }
 
 .accordion-header {
@@ -610,7 +645,7 @@ footer {
 }
 
 .accordion-item.active .accordion-header {
-    background: rgba(0, 128, 128, 0.05);
+    background: var(--bg-light);
 }
 
 .accordion-item.active .accordion-header i {

@@ -219,6 +219,20 @@ initMagneticButtons();
         }
     }
 
+    // Premium Loader Logic
+    window.addEventListener('load', () => {
+        const loader = document.getElementById('loader');
+        if (loader) {
+            setTimeout(() => {
+                loader.classList.add('fade-out');
+                // Remove from DOM after transition
+                setTimeout(() => {
+                    loader.remove();
+                }, 800);
+            }, 1000); // 1s guarantee for signature animation
+        }
+    });
+
     // Smooth Scrolling for all internal links
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {

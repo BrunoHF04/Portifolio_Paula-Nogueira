@@ -1064,3 +1064,41 @@ footer {
         font-size: 1rem;
     }
 }
+
+/* Premium Loader */
+#loader {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #fdfaf6; /* Match light theme bg */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.signature-loader {
+    font-family: 'Alex Brush', cursive;
+    font-size: clamp(2.5rem, 10vw, 4.5rem);
+    color: #B88E5E;
+    font-weight: 400 !important;
+    animation: drawSignature 2.5s forwards, pulseLoader 3s infinite ease-in-out;
+    filter: drop-shadow(0 0 10px rgba(184, 142, 94, 0.2));
+}
+
+#loader.fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+[data-theme="dark"] #loader {
+    background: #121212;
+}
+
+@keyframes pulseLoader {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.8; transform: scale(0.98); }
+}
